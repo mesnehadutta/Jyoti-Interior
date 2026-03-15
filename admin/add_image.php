@@ -77,22 +77,37 @@ $result1 = mysqli_fetch_assoc( $sql1 );
 <div class = 'row mb-3'>
 
 <label for = 'example-text-input' class = 'col-sm-2 col-form-label'> Name </label>
-<div class = 'col-sm-10'>
-<input class = 'form-control' name = 'name' type = 'text' placeholder = 'Name' id = 'name'>
+<div class="col-sm-10">
+  <select class="form-control" name="name" id="name" required>
+    <option value="" disabled selected>Select Catalogue Category</option>
+    <option value="Bedroom">Bedroom</option>
+    <option value="Living and Dining">Living and Dining</option>
+    <option value="Kids room">Kids room</option>
+    <option value="Kitchen">Kitchen</option>
+    <option value="TV Unit">TV Unit</option>
+    <option value="Puja Unit">Puja Unit</option>
+    <option value="Wardrobes">Wardrobes</option>
+    <option value="Beds">Beds</option>
+    <option value="Wall Panelling">Wall Panelling</option>
+    <option value="Bed Back Panelling">Bed Back Panelling</option>
+    <option value="Partition">Partition</option>
+    <option value="Crocker Unit">Crocker Unit</option>
+    <option value="Showpise Rack">Showpise Rack</option>
+    <option value="Door Panelling">Door Panelling</option>
+    <option value="Study Unit">Study Unit</option>
+    <option value="Dining Table and Tea Table">Dining Table and Tea Table</option>
+    <option value="Sofa">Sofa</option>
+    <option value="False Ceiling">False Ceiling</option>
+  </select>
 </div>
+
 </div>
 <!-- end row -->
-<div class = 'row mb-3'>
-<label for = 'example-text-input' class = 'col-sm-2 col-form-label'> Image Description </label>
-<div class = 'col-sm-10'>
-<input class = 'form-control' required name = 'description' type = 'text' placeholder = 'Image Description' id = 'description'>
-</div>
-</div>
 <div class = 'row mb-3'>
 <label for = 'example-search-input' class = 'col-sm-2 col-form-label'>Image</label>
 <div class = 'col-sm-10'>
 <div class = 'input-group'>
-<input type = 'file' class = 'form-control' name = 'image' id = 'image'>
+<input type = 'file' class = 'form-control' name = 'image' id = 'image' required>
 </div>
 </div>
 </div>

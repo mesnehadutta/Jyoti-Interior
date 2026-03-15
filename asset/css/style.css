@@ -553,6 +553,7 @@ a:focus, a:hover {
   margin: 0;
 }
 
+
 .hero-area {
   background-image: url("../images/slider/banner.jpg");
   background-size: cover;
@@ -1593,7 +1594,7 @@ body {
 ==================================================================*/
 .testimonial {
   padding-top: 100px;
-  background: #28ABE3;
+  background: #8b1310;
   position: relative;
   padding-bottom: 0px;
   margin-bottom: 80px;
@@ -1630,6 +1631,30 @@ body {
   height: auto;
   margin-bottom: 20px;
 }
+
+.custom-heading {
+  font-size: 2.0rem;
+  font-weight: 500;
+  color: #ffffff; /* Bright text on dark bg */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.custom-heading::after {
+  content: "";
+  width: 50px;
+  height: 3px;
+  background-color: #f8c94b; /* Gold or accent line */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  border-radius: 2px;
+}
+
 
 /*=================================================================
   Latest Posts

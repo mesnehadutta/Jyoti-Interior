@@ -3,9 +3,9 @@
     
     <!-- Logo Section -->
     <div class="navbar-brand-box d-flex align-items-center">
-      <a href="../index.php" class="logo logo-light d-flex align-items-center">
-        <img src="../assets/img/icon10.png" alt="logo-sm" height="30" class="me-2 d-lg-none d-block">
-        <img src="assets/images/icon.png" alt="logo-lg" height="35" class="d-none d-lg-block d-inline-block">
+      <a href="../index.php" class="logo d-flex align-items-center">
+        <img src="assets/images/icon.png" alt="logo-sm" height="90" width="100" class="me-2 d-lg-none d-block">
+        <img src="assets/images/icon.png" alt="logo-lg" height="90" width="100" class="d-none d-lg-block d-inline-block">
       </a>
     </div>
 

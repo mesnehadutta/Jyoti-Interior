@@ -15,7 +15,7 @@
 
 
 	<!-- Favicon -->
-	<link rel="shortcut icon" type="image/x-icon" href="asset/images/favicon.png" />
+	<link rel="shortcut icon" type="image/x-icon" href="asset/images/logo/meta-icon.jpg" />
 
 	<!-- CSS
   ================================================== -->
@@ -63,7 +63,7 @@ Fixed Navigation
 			<!-- main nav -->
 			<nav class="navbar navbar-expand-lg navbar-light px-0">
 				<!-- logo -->
-				<a class="navbar-brand logo" href="index.html">
+				<a class="navbar-brand logo" href="index.php">
 					<img loading="lazy" class="logo-default" src="asset/images/logo-2.png" width="100px" height="100px"
 						alt="logo" />
 					<img loading="lazy" class="logo-white" src="asset/images/logo-white-1.png" width="100px"
@@ -87,10 +87,10 @@ Fixed Navigation
 							<a class="nav-link" href="#about_us">About Us</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#services-header">Services</a>
+						<a class="nav-link" href="#services-header">Services</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="portfolio.html">Portfolio</a>
+							<a class="nav-link" href="portfolio.php">Portfolio</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#contact-us">Contact</a>
@@ -151,18 +151,19 @@ Start About Section
 			</div>
 			<div class="row">
 				<div class="col-lg-6 mb-5 mb-lg-0">
-					<img loading="lazy" src="asset/images/about_img.jpg " class="img-fluid" alt="">
+					<img loading="lazy" src="asset/images/about-us.jpg " class="img-fluid" alt="">
 				</div>
 				<div class="col-lg-6">
-					<p>At Jyoti Interior, we don’t just design spaces — we create environments that uplift, inspire, and
-						feel like home. Every project we take on blends functionality with aesthetics, tailored uniquely
-						to each client’s lifestyle.</p>
+					<p>Founded in 2015 by Mr. Avadhesh Pandey, Jyoti Interior started as a family dream and has grown 
+						into a trusted interior design firm known for creating stylish, functional, and personalized spaces.</p>
 
-					<p>From luxurious living rooms to efficient modular kitchens, our team ensures attention to detail,
-						material quality, and lasting craftsmanship. We believe a beautiful home should reflect your
-						story — and we’re here to help you tell it through design.</p>
+					<p>We design environments that reflect your lifestyle from elegant living rooms to smart modular kitchens 
+						blending aesthetics with practicality. Our focus on quality, detail, 
+						and client satisfaction sets us apart.</p>
 
-					<h4>Thoughtfully Designed. Elegantly Delivered.</h4>
+					<p>As a family-owned business, our values of honesty, creativity, and dedication guide every project.
+						 At Jyoti Interior, we don’t just decorate
+						 we bring your story to life through thoughtful design.<p>
 
 					<ul class="feature-list">
 						<li> <i class="tf-ion-android-checkmark-circle"></i> Trusted premium materials</li>
@@ -210,10 +211,50 @@ Start Call To Action
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<!-- Why US Deco House Section -->
+<section id="featured-services" class="featured-services py-5">
+  <div class="container">
+    <h4 class="text-center mb-5">Why US Jyoti Interior?</h4>
+    <div class="row gy-4 text-center">
+
+      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
+        <div class="service-item">
+          <div class="icon mb-2"><img src="asset/images/45days.png" height="90px" alt=""></div>
+          <p>45 days or we pay you rent</p>
+          <small class="tnc-text">T&C Applied</small>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
+        <div class="service-item">
+          <div class="icon mb-2"><img src="asset/images/house.png" height="90px" alt=""></div>
+          <p>100+ trusted customer</p>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
+        <div class="service-item">
+          <div class="icon mb-2"><img src="asset/images/verified.png" height="90px" alt=""></div>
+          <p>50+ design experts</p>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
+        <div class="service-item">
+          <div class="icon mb-2"><img src="asset/images/security.png" height="90px" alt=""></div>
+          <p>Flat 10 year warranty</p>
+          <small class="tnc-text">T&C Applied</small>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+	<div class="row mt-5">
 		<div class="col-md-12 clients-logo-wrapper">
 			<div id="clients-slider" class="clients-logo-slider">
-				<img loading="lazy" class="img-fluid client-logo" src="images/collab-company/centuryply.png" alt="">
+				<img loading="lazy" class="img-fluid client-logo" src="asset/images/collab-company/centuryply.png" alt="">
 				<img loading="lazy" class="client-logo" src="asset/images/collab-company/austin.png" alt="">
 				<img loading="lazy" class="client-logo" src="asset/images/collab-company/syska.jpg" alt="">
 				<img loading="lazy" class="client-logo" src="asset/images/collab-company/sylvan.png" alt="">
@@ -467,7 +508,7 @@ Start Call To Action
 
 				<!-- Contact Form -->
 				<div class="contact-form col-md-6 ">
-					<form id="contact-form" method="post" role="form">
+					<form action="free_consult.php" method="POST" class="">
 						<div class="form-group mb-4">
 							<input type="text" placeholder="Your Name" class="form-control" name="name" id="name"
 								required>
@@ -479,7 +520,7 @@ Start Call To Action
 						</div>
 
 						<div class="form-group mb-4">
-							<input type="text" placeholder="Subject" class="form-control" name="subject" id="subject"
+							<input type="number" placeholder="Your Phone" class="form-control" name="phone" id="phone"
 								required>
 						</div>
 
@@ -488,7 +529,7 @@ Start Call To Action
 								required></textarea>
 						</div>
 						<div id="cf-submit">
-							<input type="submit" id="contact-submit" class="btn btn-transparent" value="Submit">
+							<input type="submit" id="contact-submit" class="btn btn-transparent" value="Submit" name="submit">
 						</div>
 
 					</form>
@@ -557,7 +598,6 @@ Start Call To Action
 							<li><a
 									href="https://www.facebook.com/jyoti.interiors.9?rdid=YKT43ti95Ps4mlSk&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CnKjhNZc8%2F#">Facebook</a>
 							</li>
-							<li><a href="https://www.twitter.com/themefisher/">You Tube</a></li>
 						</ul>
 					</div>
 					<!-- End of .col-sm-3 -->
@@ -567,7 +607,7 @@ Start Call To Action
 		</div>
 		<div class="footer-bottom">
 			<h5>&copy; <span id="year"></span>. All rights reserved.</h5>
-			<h6>Designed and Developed by Sneha Dutta</h6>
+			<h6>Designed and Developed by <a href="https://portfoliosnehad.netlify.app/" >Sneha Dutta</a></h6>
 		</div>
 	</footer> <!-- end footer -->
 	<!-- Get Free Consultation Modal -->

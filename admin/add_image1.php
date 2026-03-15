@@ -4,11 +4,10 @@
   if (isset($_POST['upload'])) 
   {
     $name=$_POST['name'];
-    $description=$_POST['description'];
     $image = $_FILES['image']['name'];
     $target = "images/".basename($image);
 
-    $sql = "INSERT INTO image (name,description,image) VALUES ('$name','$description','$image')";
+    $sql = "INSERT INTO image (name,image) VALUES ('$name','$image')";
     // execute query
     //mysqli_query($con, $sql); 
     if (mysqli_query($con, $sql))

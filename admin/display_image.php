@@ -22,7 +22,7 @@ include("../dbconnection.php");
 $sql1=mysqli_query($con,"SELECT * FROM admin ");
 $result1 =mysqli_fetch_assoc($sql1);
 
-$sql = "SELECT * FROM image";
+$sql = "SELECT * FROM image ORDER BY id DESC";
 $result = $con->query($sql); 
 
 
@@ -100,8 +100,7 @@ $con->close();
         <thead>
         <tr>
             <th>ID</th>
-            <th>NAME</th>
-            <th>IMAGE DESCRIPTION</th>
+            <th>Catalogue Category</th>
             <th>IMAGE</th>
             <th>ACTION</th>
         </tr>
@@ -115,7 +114,6 @@ $con->close();
                     <tr>
                         <td><?php echo $c ?></td>
                         <td><?php echo $row["name"] ?></td>
-                        <td><?php echo $row["description"] ?></td>
                         <td><img src="images/<?php echo $row['image']; ?>" class="rounded-circle avatar-sm"></td>
                         <td>
                             <a href="edit_image.php?id=<?php echo $row["id"]; ?>" onclick="return confirm('Are you sure you want to edit?')" class="btn btn-info">EDIT</a>
