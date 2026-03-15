@@ -585,7 +585,7 @@ Start Call To Action
 							</li>
 							<li><a href="#about_us">About</a></li>
 							<li><a href="#services-header">Services</a></li>
-							<li><a href="admin/index.php">Admin Login</a></li>
+							<li><a href="admin/login.php">Admin Login</a></li>
 						</ul>
 					</div>
 					<!-- End of .col-sm-3 -->

@@ -305,7 +305,7 @@ End Fixed Navigation
 							</li>
 							<li><a href="index.php#about_us">About</a></li>
 							<li><a href="index.php#services-header">Services</a></li>
-							<li><a href="admin/index.php">Admin Login</a></li>
+							<li><a href="admin/login.php">Admin Login</a></li>
 						</ul>
 					</div>
 					<!-- End of .col-sm-3 -->
