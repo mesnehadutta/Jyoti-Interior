@@ -64,6 +64,14 @@
     autoplaySpeed: 2000
   });
 
+  if ($('#testimonialCarousel').length) {
+    $('#testimonialCarousel').carousel({
+      interval: 4500,
+      ride: 'carousel',
+      pause: false
+    });
+  }
+
 
   /* ========================================================================= */
   /*	Clients Slider Carousel

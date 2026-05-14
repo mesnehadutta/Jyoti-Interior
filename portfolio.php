@@ -1,163 +1,21 @@
 <?php
-  include 'dbconnection.php'; // your DB connection
+require_once __DIR__ . '/dbconnection.php';
 
-  // Fetch all images from DB, assuming table `image` with fields `image_url`, `name`
-  $sql = "SELECT name,image FROM image ORDER BY id DESC";
-  $result = $con->query($sql);
+$imagesByCategory = [];
+$imageStatement = $conn->query('SELECT name, image FROM image ORDER BY id DESC');
 
-  // Prepare image array grouped by name (category)
-  $imagesByCategory = [];
-  while ($row = $result->fetch_assoc()) {
-    $category = strtolower(str_replace(' ', '-', $row['name'])); // normalize category key
+foreach ($imageStatement->fetchAll() as $row) {
+    $category = normalize_catalogue_category($row['name']);
     $imagesByCategory[$category][] = $row['image'];
-  }
+}
 ?>
-
-
-<!DOCTYPE html>
-
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
-<html lang="en">
-<head>
-    <style>
-    .catalogue-card {
-      width: 100%;
-      height: 250px;
-      overflow: hidden;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .catalogue-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .category-btn {
-      margin: 0 5px 15px 0;
-    }
-  </style>
-
-  <!-- Basic Page Needs
-  ================================================== -->
-  <meta charset="utf-8">
-  <title>Jyoti Interior</title>
-
-  <!-- Mobile Specific Metas
-  ================================================== -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="One page parallax responsive HTML Template">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="author" content="Themefisher">
-  <meta name="generator" content="Themefisher Bingo HTML Template v1.0">
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="asset/images/logo/meta-icon.jpg" />
-
-  <!-- CSS
-  ================================================== -->
-  <!-- Themefisher Icon font -->
-  <link rel="stylesheet" href="asset/plugins/themefisher-font/style.css">
-  <!-- bootstrap.min css -->
-  <link rel="stylesheet" href="asset/plugins/bootstrap/bootstrap.min.css">
-  <!-- Lightbox.min css -->
-  <link rel="stylesheet" href="asset/plugins/lightbox2/css/lightbox.min.css">
-  <!-- animation css -->
-  <link rel="stylesheet" href="asset/plugins/animate/animate.css">
-  <!-- Slick Carousel -->
-  <link rel="stylesheet" href="asset/plugins/slick/slick.css">
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="asset/css/style.css">
-
-  <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap JS Bundle (with Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
-</head>
-<body id="body">
-
-  <!--
-  Start Preloader
-  ==================================== -->
-  <div id="preloader">
-    <div class='preloader'>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-  <!--
-  End Preloader
-  ==================================== -->
-
-<!--
-Fixed Navigation
-==================================== -->
-<header class="navigation fixed-top">
-		<div class="container">
-			<!-- main nav -->
-			<nav class="navbar navbar-expand-lg navbar-light px-0">
-				<!-- logo -->
-				<a class="navbar-brand logo" href="index.html">
-					<img loading="lazy" class="logo-default" src="asset/images/logo-2.png" width="100px" height="100px"
-						alt="logo" />
-					<img loading="lazy" class="logo-white" src="asset/images/logo-white-1.png" width="100px"
-						height="100px" alt="logo" />
-				</a>
-				<!-- /logo -->
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-					aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<div class="collapse navbar-collapse" id="navigation">
-					<ul class="navbar-nav ml-auto text-center">
-						<li class="nav-item dropdown active">
-							<a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Homepage
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="index.php#about_us">About Us</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="index.php#services-header">Services</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="portfolio.php">Portfolio</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="index.php#contact-us">Contact</a>
-						</li>
-					<li class="nav-item d-flex align-items-center">
-						<button class="btn btn-warning btn-sm rounded-pill shadow-sm text-dark font-weight-bold px-3 py-2 ml-lg-3"
-							data-toggle="modal" data-target="#consultationModal">
-							Get Free Consultation
-						</button>
-					</li>
-					</ul>
-				</div>
-
-			</nav>
-			<!-- /main nav -->
-		</div>
-	</header>
-<!--
-End Fixed Navigation
-==================================== -->
+<?php
+$pageTitle = 'Jyoti Interior Portfolio';
+$pageDescription = 'Browse Jyoti Interior portfolio work across residential, commercial, and modular kitchen projects.';
+$currentPage = 'portfolio';
+include __DIR__ . '/includes/site-head.php';
+include __DIR__ . '/includes/site-header.php';
+?>
 
 <section class="single-page-header">
 	<div class="container">
@@ -165,7 +23,7 @@ End Fixed Navigation
 			<div class="col-md-12">
 				<h2>Catalogue</h2>
 				<ol class="breadcrumb header-bradcrumb justify-content-center">
-					<li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+					<li class="breadcrumb-item"><a href="index.php" class="text-white">Home</a></li>
 					<li class="breadcrumb-item active" aria-current="page">Portfolio</li>
 				</ol>
 			</div>
@@ -173,22 +31,24 @@ End Fixed Navigation
 	</div>
 </section>
 
+<?php include __DIR__ . '/includes/mobile-cta.php'; ?>
+
 <!-- Start Portfolio Section
 		=========================================== -->
 
 <div class="container">
 
- <?php
-  $categorySql = "SELECT DISTINCT name FROM image ORDER BY name ASC";
-  $catResult = $con->query($categorySql);
+<?php
+$categoryStatement = $conn->query('SELECT DISTINCT name FROM image ORDER BY name ASC');
+$categories = $categoryStatement->fetchAll();
 ?>
 
-<div class="text-center my-4">
-  <?php while ($cat = $catResult->fetch_assoc()) {
-    $slug = strtolower(str_replace(' ', '-', $cat['name']));
+<div class="text-center catalogue-toolbar">
+  <?php foreach ($categories as $cat) {
+    $slug = normalize_catalogue_category($cat['name']);
   ?>
-    <button class="btn btn-outline-primary m-1" onclick="filterCategory('<?php echo $slug; ?>')">
-      <?php echo $cat['name']; ?>
+    <button class="btn btn-outline-primary m-1" onclick="filterCategory('<?php echo escape_html($slug); ?>')">
+      <?php echo escape_html($cat['name']); ?>
     </button>
   <?php } ?>
   <button class="btn btn-outline-dark m-1" onclick="filterCategory('all')">All</button>
@@ -284,84 +144,16 @@ End Fixed Navigation
 
 
 
-<footer id="footer" class="bg-one">
-		<div class="top-footer">
-			<div class="container">
-				<div class="row justify-content-around">
-					<div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-						<h3>about</h3>
-						<p>Design is a journey, not a destination.
-							Join us again as we shape beautiful spaces.</p>
-					</div>
-					<!-- End of .col-sm-3 -->
-
-
-					<!-- End of .col-sm-3 -->
-
-					<div class="col-lg-2 col-md-6 mb-5 mb-md-0">
-						<ul>
-							<li>
-								<h3>Quick Links</h3>
-							</li>
-							<li><a href="index.php#about_us">About</a></li>
-							<li><a href="index.php#services-header">Services</a></li>
-							<li><a href="admin/login.php">Admin Login</a></li>
-						</ul>
-					</div>
-					<!-- End of .col-sm-3 -->
-
-					<div class="col-lg-3 col-md-6">
-						<ul>
-							<li>
-								<h3>Connect with us Socially</h3>
-							</li>
-							<li><a
-									href="https://www.facebook.com/jyoti.interiors.9?rdid=YKT43ti95Ps4mlSk&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CnKjhNZc8%2F#">Facebook</a>
-							</li>
-						</ul>
-					</div>
-					<!-- End of .col-sm-3 -->
-
-				</div>
-			</div> <!-- end container -->
-		</div>
-		<div class="footer-bottom">
-			<h5>&copy; <span id="year"></span>. All rights reserved.</h5>
-			<h6>Designed and Developed by Sneha Dutta</h6>
-		</div>
-	</footer> <!-- end footer -->
-
-
-<!-- end Footer Area
-========================================== -->
-<!-- 
-    Essential Scripts
-    =====================================-->
-<!-- Main jQuery -->
-<script src="asset/plugins/jquery/jquery.min.js"></script>
-
-<!-- Bootstrap4 -->
-<script src="asset/plugins/bootstrap/bootstrap.min.js"></script>
-<!-- Parallax -->
-<script src="asset/plugins/parallax/jquery.parallax-1.1.3.js"></script>
-<!-- lightbox -->
-<script src="asset/plugins/lightbox2/js/lightbox.min.js"></script>
-<!-- Owl Carousel -->
-<script src="asset/plugins/slick/slick.min.js"></script>
-<!-- filter -->
-<script src="asset/plugins/filterizr/jquery.filterizr.min.js"></script>
-<!-- Smooth Scroll js -->
-<script src="asset/plugins/smooth-scroll/smooth-scroll.min.js"></script>
-<!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"></script>
-<script src="asset/plugins/google-map/gmap.js"></script>
-
-<!-- Custom js -->
-<script src="asset/js/script.js"></script>
-
+<?php include __DIR__ . '/includes/site-footer.php'; ?>
+<?php include __DIR__ . '/includes/consultation-modal.php'; ?>
+<?php
+$extraScripts = str_replace(
+  '__IMAGES_JSON__',
+  json_encode($imagesByCategory, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+  <<<'HTML'
 <script>
   // JS version of PHP array
-  const images = <?php echo json_encode($imagesByCategory); ?>;
+  const images = __IMAGES_JSON__;
 
   let currentCategory = 'all';
   let currentPage = 1;
@@ -386,7 +178,7 @@ End Fixed Navigation
 
     pageImages.forEach(src => {
       const col = document.createElement("div");
-      col.className = "col-md-4 mb-4";
+      col.className = "col-6 col-lg-4 mb-4";
       col.innerHTML = `
         <div class="catalogue-card">
           <img src="admin/images/${src}" alt="Interior Image" class="img-fluid border shadow" style="aspect-ratio: 1/1; object-fit: cover;" />
@@ -425,7 +217,7 @@ End Fixed Navigation
   // Initial Render
   renderImages();
 </script>
-
-</body>
-
-</html>
+HTML
+);
+include __DIR__ . '/includes/site-scripts.php';
+?>

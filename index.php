@@ -1,130 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-	<!-- Basic Page Needs
-  ================================================== -->
-	<meta charset="utf-8">
-	<title>Jyoti Interior</title>
-
-	<!-- Mobile Specific Metas
-  ================================================== -->
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
-	<!-- Favicon -->
-	<link rel="shortcut icon" type="image/x-icon" href="asset/images/logo/meta-icon.jpg" />
-
-	<!-- CSS
-  ================================================== -->
-	<!-- Themefisher Icon font -->
-	<link rel="stylesheet" href="asset/plugins/themefisher-font/style.css">
-	<!-- bootstrap.min css -->
-	<link rel="stylesheet" href="asset/plugins/bootstrap/bootstrap.min.css">
-	<!-- Lightbox.min css -->
-	<link rel="stylesheet" href="asset/plugins/lightbox2/css/lightbox.min.css">
-	<!-- animation css -->
-	<link rel="stylesheet" href="asset/plugins/animate/animate.css">
-	<!-- Slick Carousel -->
-	<link rel="stylesheet" href="asset/plugins/slick/slick.css">
-	<!-- Main Stylesheet -->
-	<link rel="stylesheet" href="asset/css/style.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-</head>
-
-<body id="body">
-
-	<!--
-  Start Preloader
-  ==================================== -->
-	<div id="preloader">
-		<div class='preloader'>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-		</div>
-	</div>
-	<!--
-  End Preloader
-  ==================================== -->
-
-	<!--
-Fixed Navigation
-==================================== -->
-	<header class="navigation fixed-top">
-		<div class="container">
-			<!-- main nav -->
-			<nav class="navbar navbar-expand-lg navbar-light px-0">
-				<!-- logo -->
-				<a class="navbar-brand logo" href="index.php">
-					<img loading="lazy" class="logo-default" src="asset/images/logo-2.png" width="100px" height="100px"
-						alt="logo" />
-					<img loading="lazy" class="logo-white" src="asset/images/logo-white-1.png" width="100px"
-						height="100px" alt="logo" />
-				</a>
-				<!-- /logo -->
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-					aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<div class="collapse navbar-collapse" id="navigation">
-					<ul class="navbar-nav ml-auto text-center">
-						<li class="nav-item dropdown active">
-							<a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Homepage
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#about_us">About Us</a>
-						</li>
-						<li class="nav-item">
-						<a class="nav-link" href="#services-header">Services</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="portfolio.php">Portfolio</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#contact-us">Contact</a>
-						</li>
-					<li class="nav-item d-flex align-items-center">
-						<button class="btn btn-warning btn-sm rounded-pill shadow-sm text-dark font-weight-bold px-3 py-2 ml-lg-3"
-							data-toggle="modal" data-target="#consultationModal">
-							Get Free Consultation
-						</button>
-					</li>
-					</ul>
-				</div>
-
-			</nav>
-			<!-- /main nav -->
-		</div>
-	</header>
-	<!--
-End Fixed Navigation
-==================================== -->
+<?php
+$pageTitle = 'Jyoti Interior';
+$pageDescription = 'Jyoti Interior creates elegant, functional interior spaces for homes and commercial projects.';
+$currentPage = 'home';
+include __DIR__ . '/includes/site-head.php';
+include __DIR__ . '/includes/site-header.php';
+?>
 
 	<div class="hero-slider">
 		<div class="slider-item th-fullpage hero-area" style="background-image: url(asset/images/slider/banner1.jpg);">
 			<div class="container">
-				<div class="row">
-					<div class="col-md-12 text-center">
+				<div class="row align-items-center min-vh-100">
+					<div class="col-lg-8 col-xl-7">
+						<div class="hero-content-shell text-center text-lg-left">
+							<span class="hero-eyebrow" data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".05">Custom Interior Design Studio</span>
 						<h1 data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".1">
 							Your Home, Your Style, Our Expertise.
 						</h1>
 						<p data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".5">
 							Together, we’ll create interiors that truly feel like yours.
 						</p>
-						<a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8" class="btn btn-main"
-							href="service.html">Explore Us</a>
+						<div class="hero-actions" data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8">
+							<a class="btn btn-main" href="#services-header">Explore Us</a>
+							<a class="btn btn-outline-light hero-secondary-btn" href="#contact-us">Book Consultation</a>
+						</div>
+						</div>
 					</div>
 
 				</div>
@@ -171,7 +70,7 @@ Start About Section
 						<li> <i class="tf-ion-android-checkmark-circle"></i> Expert craftsmanship</li>
 						<li> <i class="tf-ion-android-checkmark-circle"></i> Timely and reliable delivery</li>
 					</ul>
-					<a href="contact.html" class="btn btn-main mt-20">Learn More</a>
+					<a href="#contact-us" class="btn btn-main mt-20">Learn More</a>
 				</div>
 			</div> <!-- End row -->
 		</div> <!-- End container -->
@@ -201,6 +100,8 @@ Start Call To Action
 	<!-- Start Services Section
 ==================================== -->
 
+	<section class="homepage-showcase section-sm">
+		<div class="container">
 	<div class="row justify-content-center mt-5">
 		<div class="col-xl-6 col-lg-8">
 			<div class="title text-center">
@@ -213,41 +114,43 @@ Start Call To Action
 	</div>
 	<!-- Why US Deco House Section -->
 <section id="featured-services" class="featured-services py-5">
-  <div class="container">
-    <h4 class="text-center mb-5">Why US Jyoti Interior?</h4>
-    <div class="row gy-4 text-center">
+  <h4 class="text-center mb-5">Why Choose Jyoti Interior?</h4>
+  <div class="row gy-4 text-center justify-content-center">
 
-      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
-        <div class="service-item">
-          <div class="icon mb-2"><img src="asset/images/45days.png" height="90px" alt=""></div>
-          <p>45 days or we pay you rent</p>
-          <small class="tnc-text">T&C Applied</small>
-        </div>
+    <div class="col-6 col-lg-3 d-flex justify-content-center">
+      <div class="service-item rating-card">
+        <div class="rating-icon"><i class="fas fa-calendar-check"></i></div>
+        <h5>45 Days</h5>
+        <p>45 days or we pay your rent</p>
+        <small class="tnc-text">T&amp;C Applied</small>
       </div>
-
-      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
-        <div class="service-item">
-          <div class="icon mb-2"><img src="asset/images/house.png" height="90px" alt=""></div>
-          <p>100+ trusted customer</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
-        <div class="service-item">
-          <div class="icon mb-2"><img src="asset/images/verified.png" height="90px" alt=""></div>
-          <p>50+ design experts</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6 d-flex justify-content-center">
-        <div class="service-item">
-          <div class="icon mb-2"><img src="asset/images/security.png" height="90px" alt=""></div>
-          <p>Flat 10 year warranty</p>
-          <small class="tnc-text">T&C Applied</small>
-        </div>
-      </div>
-
     </div>
+
+    <div class="col-6 col-lg-3 d-flex justify-content-center">
+      <div class="service-item rating-card">
+        <div class="rating-icon"><i class="fas fa-house-user"></i></div>
+        <h5>100+</h5>
+        <p>Trusted customers served</p>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-3 d-flex justify-content-center">
+      <div class="service-item rating-card">
+        <div class="rating-icon"><i class="fas fa-user-check"></i></div>
+        <h5>50+</h5>
+        <p>Experienced design experts</p>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-3 d-flex justify-content-center">
+      <div class="service-item rating-card">
+        <div class="rating-icon"><i class="fas fa-shield-heart"></i></div>
+        <h5>10 Years</h5>
+        <p>Flat warranty on selected work</p>
+        <small class="tnc-text">T&amp;C Applied</small>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -274,8 +177,8 @@ Start Call To Action
 			<p class="text-muted">We specialize in creating beautiful, functional interiors tailored to your needs.</p>
 		</div>
 	</div>
-	<div class="row g-4">
-		<div class="col-md-4">
+	<div class="row g-4 service-grid">
+		<div class="col-sm-6 col-lg-4 d-flex">
 			<div class="service-block arched-card text-center text-white" id="Services">
 				<div class="icon-circle">
 					<i class="fas fa-paint-brush"></i>
@@ -288,7 +191,7 @@ Start Call To Action
 		</div>
 
 		<!-- Card 2 - Bordered -->
-		<div class="col-md-4">
+		<div class="col-sm-6 col-lg-4 d-flex">
 			<div class="service-block bordered-card text-center">
 				<div class="icon-circle">
 					<i class="fas fa-building"></i>
@@ -300,7 +203,7 @@ Start Call To Action
 		</div>
 
 		<!-- Card 3 - Arched Style -->
-		<div class="col-md-4">
+		<div class="col-sm-6 col-lg-4 d-flex">
 			<div class="service-block arched-card text-center text-white">
 				<div class="icon-circle">
 					<i class="fas fa-utensils"></i>
@@ -312,11 +215,11 @@ Start Call To Action
 			</div>
 		</div>
 	</div>
-	<div class="row g-4">
-		<div class="col-md-4">
+	<div class="row g-4 service-grid">
+		<div class="col-sm-6 col-lg-4 d-flex">
 			<div class="service-block arched-card text-center text-white">
 				<div class="icon-circle">
-					<i class="fas fa-paint-brush"></i>
+					<i class="fas fa-couch"></i>
 				</div>
 				<h4>Smart & Stylish Space Solutions</h4>
 				<p>Our space-saving furniture solutions are thoughtfully designed to maximize functionality without
@@ -326,10 +229,10 @@ Start Call To Action
 		</div>
 
 		<!-- Card 2 - Bordered -->
-		<div class="col-md-4">
+		<div class="col-sm-6 col-lg-4 d-flex">
 			<div class="service-block bordered-card text-center">
 				<div class="icon-circle">
-					<i class="fas fa-building"></i>
+					<i class="fas fa-bed"></i>
 				</div>
 				<h4>Bedroom & Wall Paint</h4>
 				<p>A well-designed bedroom is a personal sanctuary, and the right wall colors enhance its mood and
@@ -339,10 +242,10 @@ Start Call To Action
 		</div>
 
 		<!-- Card 3 - Arched Style -->
-		<div class="col-md-4">
+		<div class="col-sm-6 col-lg-4 d-flex">
 			<div class="service-block arched-card text-center text-white">
 				<div class="icon-circle">
-					<i class="fas fa-utensils"></i>
+					<i class="fas fa-warehouse"></i>
 				</div>
 				<h4>Wardrobes & Storage Solutions</h4>
 				<p>Our wardrobe and storage solutions are designed to maximize space without compromising on style. We
@@ -350,6 +253,8 @@ Start Call To Action
 			</div>
 		</div>
 	</div>
+		</div>
+	</section>
 
 	<!--
 	Start Counter Section
@@ -451,6 +356,64 @@ Start Call To Action
 	<!-- End section -->
 	<!-- Start Testimonial
 =========================================== -->
+	<section class="testimonial section" id="testimonial">
+		<div class="container">
+			<div class="row text-center mb-4">
+				<div class="col-lg-12">
+					<h2 class="section-title custom-heading">What Our Customers Say</h2>
+				</div>
+			</div>
+
+			<div id="testimonialCarousel" class="carousel slide" data-ride="carousel" data-interval="4500">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<div class="d-flex flex-column align-items-center p-4 shadow-sm rounded bg-light text-center">
+							<img src="asset/images/company/Profile-Transparent.png" class="rounded-circle mb-3 img-fluid testimonial-avatar"
+								alt="Client">
+							<p class="mb-3 fst-italic">
+								"Exceptional service and impeccable design expertise define Jyoti Interior, led by the talented Avadhesh Pandey. From conceptualization to execution, every detail reflects elegance, craftsmanship, and functionality."
+							</p>
+							<h5 class="mb-0 fw-bold">Rohan Upadhyay</h5>
+						</div>
+					</div>
+
+					<div class="carousel-item">
+						<div class="d-flex flex-column align-items-center p-4 shadow-sm rounded bg-light text-center">
+							<img src="asset/images/company/Profile-Transparent.png" class="rounded-circle mb-3 img-fluid testimonial-avatar"
+								alt="Client">
+							<p class="mb-3 fst-italic">"Great work. Branded Greenpanel HDF boards were used and the finishing quality was up to the mark."</p>
+							<h5 class="mb-0 fw-bold">Sam Wilsone</h5>
+						</div>
+					</div>
+
+					<div class="carousel-item">
+						<div class="d-flex flex-column align-items-center p-4 shadow-sm rounded bg-light text-center">
+							<img src="asset/images/company/Profile-Transparent.png" class="rounded-circle mb-3 img-fluid testimonial-avatar"
+								alt="Client">
+							<p class="mb-3 fst-italic">"Great experience working with Jyoti Interiors. Professional, knowledgeable, and the work was completed quickly."</p>
+							<h5 class="mb-0 fw-bold">Chandan Ghosh</h5>
+						</div>
+					</div>
+
+					<div class="carousel-item">
+						<div class="d-flex flex-column align-items-center p-4 shadow-sm rounded bg-light text-center">
+							<img src="asset/images/company/Profile-Transparent.png" class="rounded-circle mb-3 img-fluid testimonial-avatar"
+								alt="Client">
+							<p class="mb-3 fst-italic">"Truly professional craftsmanship and very good value for money."</p>
+							<h5 class="mb-0 fw-bold">Rohit Upadhyay</h5>
+						</div>
+					</div>
+				</div>
+
+				<a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev" aria-label="Previous testimonial">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				</a>
+				<a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next" aria-label="Next testimonial">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				</a>
+			</div>
+		</div>
+	</section>
 	<!--Start Contact Us
 	=========================================== -->
 	<section class="contact-us" id="contact-us">
@@ -550,138 +513,10 @@ Start Call To Action
 			referrerpolicy="no-referrer-when-downgrade"></iframe>
 
 	</div>
-	<!-- Floating Contact Button Group -->
-	<div class="floating-contact">
-		<div class="chat-options" id="chatOptions">
-			<a href="tel:+918902277660" class="chat-icon call"><i class="fas fa-phone-alt"></i></a>
-			<a href="https://wa.me/+918902277660" target="_blank" class="chat-icon whatsapp"><i
-					class="fab fa-whatsapp"></i></a>
-		</div>
-		<div class="chat-main" onclick="toggleChat()">
-			<i id="toggleIcon" class="fas fa-comment-alt"></i>
-		</div>
-	</div>
-
-
-	<!--====  End of Google Map  ====-->
-	<footer id="footer" class="bg-one">
-		<div class="top-footer">
-			<div class="container">
-				<div class="row justify-content-around">
-					<div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-						<h3>about</h3>
-						<p>Design is a journey, not a destination.
-							Join us again as we shape beautiful spaces.</p>
-					</div>
-					<!-- End of .col-sm-3 -->
-
-
-					<!-- End of .col-sm-3 -->
-
-					<div class="col-lg-2 col-md-6 mb-5 mb-md-0">
-						<ul>
-							<li>
-								<h3>Quick Links</h3>
-							</li>
-							<li><a href="#about_us">About</a></li>
-							<li><a href="#services-header">Services</a></li>
-							<li><a href="admin/login.php">Admin Login</a></li>
-						</ul>
-					</div>
-					<!-- End of .col-sm-3 -->
-
-					<div class="col-lg-3 col-md-6">
-						<ul>
-							<li>
-								<h3>Connect with us Socially</h3>
-							</li>
-							<li><a
-									href="https://www.facebook.com/jyoti.interiors.9?rdid=YKT43ti95Ps4mlSk&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CnKjhNZc8%2F#">Facebook</a>
-							</li>
-						</ul>
-					</div>
-					<!-- End of .col-sm-3 -->
-
-				</div>
-			</div> <!-- end container -->
-		</div>
-		<div class="footer-bottom">
-			<h5>&copy; <span id="year"></span>. All rights reserved.</h5>
-			<h6>Designed and Developed by <a href="https://portfoliosnehad.netlify.app/" >Sneha Dutta</a></h6>
-		</div>
-	</footer> <!-- end footer -->
-	<!-- Get Free Consultation Modal -->
-<div class="modal fade" id="consultationModal" tabindex="-1" role="dialog" aria-labelledby="consultationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content rounded">
-      <div class="modal-header bg-warning text-dark">
-        <h5 class="modal-title" id="consultationModalLabel">Get Free Consultation</h5>
-        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="free_consult.php" method="POST" class="">
-
-          <div class="form-group">
-            <label for="name">Your Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
-          </div>
-          <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
-          </div>
-          <div class="form-group">
-            <label for="email">Phone</label>
-            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter phone no.">
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea class="form-control" id="message" name="message" rows="3" placeholder="Your query..."></textarea>
-          </div>
-          <button type="submit" name="submit" class="btn btn-warning text-dark">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-	<!-- end Footer Area
-========================================== -->
-	<!-- 
-	Essential Scripts
-	=====================================-->
-	<!-- Main jQuery -->
-	<script src="asset/plugins/jquery/jquery.min.js"></script>
-
-	<!-- Bootstrap4 -->
-	<script src="asset/plugins/bootstrap/bootstrap.min.js"></script>
-	<!-- Parallax -->
-	<script src="asset/plugins/parallax/jquery.parallax-1.1.3.js"></script>
-	<!-- lightbox -->
-	<script src="asset/plugins/lightbox2/js/lightbox.min.js"></script>
-	<!-- Owl Carousel -->
-	<script src="asset/plugins/slick/slick.min.js"></script>
-	<!-- filter -->
-	<script src="asset/plugins/filterizr/jquery.filterizr.min.js"></script>
-	<!-- Smooth Scroll js -->
-	<script src="asset/plugins/smooth-scroll/smooth-scroll.min.js"></script>
-	<!-- Google Map -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"></script>
-	<script src="asset/plugins/google-map/gmap.js"></script>
-	<script>
-		function toggleChat() {
-			const options = document.getElementById("chatOptions");
-			const icon = document.getElementById("toggleIcon");
-
-			options.classList.toggle("show");
-			icon.className = options.classList.contains("show") ? "fas fa-times" : "fas fa-comment-alt";
-		}
-	</script>
-	<!-- Custom js -->
-	<script src="asset/js/script.js"></script>
-
-</body>
-
-</html>
+	<?php include __DIR__ . '/includes/mobile-cta.php'; ?>
+	<?php include __DIR__ . '/includes/site-footer.php'; ?>
+	<?php include __DIR__ . '/includes/consultation-modal.php'; ?>
+	<?php
+	$showFloatingContact = true;
+	include __DIR__ . '/includes/site-scripts.php';
+	?>

@@ -1,41 +1,49 @@
 <?php
-   include("../dbconnection.php");
-   if (session_status() === PHP_SESSION_NONE) {
-      session_start();
-   }
-   
-   if($_SERVER["REQUEST_METHOD"] == "POST") 
-   {
-      // username and password sent from form 
-      
-      $email = mysqli_real_escape_string($con,$_POST['email']);
-      $password = mysqli_real_escape_string($con,$_POST['password']);
+require_once __DIR__ . '/../dbconnection.php';
 
-      
-      $sql = "SELECT * FROM admin WHERE email='".$email."'";
-      $result = mysqli_query($con,$sql);
-      $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-      $count = mysqli_num_rows($result);
-      
-      if($count == 1) 
-     {
-    $dbemail=$row['email'];
-    $dbpassword=$row['password'];
-    }
-    if($email == $dbemail && $password == $dbpassword)
-    {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
-    $_SESSION['sess_email']=$email;
-    echo '<script>alert("Login Successfull")</script>';
-    echo'<script>window.location.href = "get_consultation_data.php"</script>';
-    }  
-    else
-      {
-         echo '<script>alert("Your Login Name or Password is invalid")</script>';
-             //echo'<script>window.location.href = "index.php"</script>';
-      }
-   }
-         
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim((string) ($_POST['email'] ?? ''));
+    $password = (string) ($_POST['password'] ?? '');
+
+    $statement = $conn->prepare('SELECT * FROM admin WHERE email = :email LIMIT 1');
+    $statement->execute([':email' => $email]);
+    $admin = $statement->fetch();
+
+    $isValidLogin = false;
+    if ($admin) {
+        $storedPassword = (string) ($admin['password'] ?? '');
+        $trimmedStoredPassword = trim($storedPassword);
+
+        $isValidLogin =
+            password_verify($password, $storedPassword) ||
+            password_verify($password, $trimmedStoredPassword) ||
+            hash_equals($storedPassword, $password) ||
+            hash_equals($trimmedStoredPassword, $password);
+
+        if ($isValidLogin && !password_get_info($storedPassword)['algo']) {
+            $normalizedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $updateStatement = $conn->prepare('UPDATE admin SET password = :password WHERE id = :id');
+            $updateStatement->execute([
+                ':password' => $normalizedPassword,
+                ':id' => $admin['id'],
+            ]);
+        }
+    }
+
+    if ($isValidLogin) {
+        session_regenerate_id(true);
+        $_SESSION['sess_email'] = $email;
+        echo '<script>alert("Login Successful")</script>';
+        echo '<script>window.location.href = "get_consultation_data.php"</script>';
+    } else {
+        echo '<script>alert("Your login email or password is invalid")</script>';
+
+    }
+}
 ?>
 
 <!doctype html>

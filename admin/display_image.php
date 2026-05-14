@@ -1,34 +1,22 @@
 <?php
+session_start();
+require_once __DIR__ . '/../dbconnection.php';
 
- session_start();
- $email=$_SESSION['sess_email'];
-if (isset($_GET['logout']))
-  {
- 
-      
-  unset($_SESSION['sess_email']);
-  session_destroy();
-  header("Location:../index.php");
+if (isset($_GET['logout'])) {
+    unset($_SESSION['sess_email']);
+    session_destroy();
+    redirect('../index.php');
 }
 
-if(empty($_SESSION['sess_email']))
-{
- header("Location:../index.php");
-
+if (empty($_SESSION['sess_email'])) {
+    redirect('../index.php');
 }
 
-include("../dbconnection.php");
+$adminStatement = $conn->query('SELECT * FROM admin LIMIT 1');
+$result1 = $adminStatement->fetch();
 
-$sql1=mysqli_query($con,"SELECT * FROM admin ");
-$result1 =mysqli_fetch_assoc($sql1);
-
-$sql = "SELECT * FROM image ORDER BY id DESC";
-$result = $con->query($sql); 
-
-
-
-
-$con->close(); 
+$imageStatement = $conn->query('SELECT * FROM image ORDER BY id DESC');
+$images = $imageStatement->fetchAll();
 ?>
 
 <!doctype html>
@@ -50,7 +38,7 @@ $con->close();
 <link href="assets/libs/datatables.net-select-bs4/css//select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
 <!-- Responsive datatable examples -->
-<link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />     
+<link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
 <!-- Bootstrap Css -->
 <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -71,10 +59,6 @@ $con->close();
 <?php include('sidebar.php') ?>
 <!-- Left Sidebar End -->
 
-
-
-
-
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -88,14 +72,12 @@ $con->close();
 <div class="card">
 <div class="card-body">
 
-    <!-- Create Button -->
     <div class="mb-3 text-end">
         <a href="add_image.php" class="btn btn-success">
             <i class="fas fa-plus"></i> Create New
         </a>
     </div>
 
-    <!-- Table -->
     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
         <tr>
@@ -108,19 +90,20 @@ $con->close();
 
         <tbody>
             <?php
-            if ($result->num_rows > 0) {
+            if (!empty($images)) {
                 $c = 1;
-                while ($row = $result->fetch_assoc()) { ?>
+                foreach ($images as $row) { ?>
                     <tr>
                         <td><?php echo $c ?></td>
-                        <td><?php echo $row["name"] ?></td>
-                        <td><img src="images/<?php echo $row['image']; ?>" class="rounded-circle avatar-sm"></td>
+                        <td><?php echo escape_html($row['name']) ?></td>
+                        <td><img src="images/<?php echo escape_html($row['image']); ?>" class="rounded-circle avatar-sm" alt="Catalogue image"></td>
                         <td>
-                            <a href="edit_image.php?id=<?php echo $row["id"]; ?>" onclick="return confirm('Are you sure you want to edit?')" class="btn btn-info">EDIT</a>
-                            <a href="delete_image.php?id=<?php echo $row["id"]; ?>" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger">DELETE</a>
+                            <a href="edit_image.php?id=<?php echo (int) $row['id']; ?>" onclick="return confirm('Are you sure you want to edit?')" class="btn btn-info">EDIT</a>
+                            <a href="delete_image.php?id=<?php echo (int) $row['id']; ?>" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger">DELETE</a>
                         </td>
                     </tr>
-            <?php $c++;
+            <?php
+                    $c++;
                 }
             } ?>
         </tbody>
@@ -138,7 +121,7 @@ $con->close();
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                               © Deco House
+                               Â© Deco House
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">

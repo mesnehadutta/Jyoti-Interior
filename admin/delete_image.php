@@ -1,11 +1,12 @@
 <?php
-include("../dbconnection.php");
-$sql = "DELETE FROM image WHERE id='" . $_GET["id"] . "'";
-if (mysqli_query($con, $sql)) {
-    echo  '<script>alert("Record deleted successfully")<scipt>';
-      header("Location:display_image.php");
-} else {
-    echo '<script>alert("Error deleting record: " . mysqli_error($conn))</scipt>';
+require_once __DIR__ . '/../dbconnection.php';
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if ($id) {
+    $statement = $conn->prepare('DELETE FROM image WHERE id = :id');
+    $statement->execute([':id' => $id]);
 }
-mysqli_close($con);
+
+redirect('display_image.php');
 ?>

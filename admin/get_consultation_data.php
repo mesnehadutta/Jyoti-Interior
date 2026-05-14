@@ -1,26 +1,25 @@
 <?php
 session_start();
+require_once __DIR__ . '/../dbconnection.php';
+
 if (isset($_GET['logout'])) {
     unset($_SESSION['sess_email']);
     session_destroy();
-    header("Location:../index.php");
-    exit();
+    redirect('../index.php');
 }
 
 if (empty($_SESSION['sess_email'])) {
-    header("Location:../index.php");
-    exit();
+    redirect('../index.php');
 }
-
-include('../dbconnection.php');
 
 $email = $_SESSION['sess_email'];
 
-$sql = "SELECT * FROM free_consultation";
-$result = $con->query($sql);
+$consultationStatement = $conn->query('SELECT * FROM free_consultation ORDER BY ID DESC');
+$consultations = $consultationStatement->fetchAll();
 
-$sql1 = mysqli_query($con, "SELECT * FROM admin WHERE ID='1'");
-$result1 = mysqli_fetch_assoc($sql1);
+$adminStatement = $conn->prepare('SELECT * FROM admin WHERE ID = :id');
+$adminStatement->execute([':id' => 1]);
+$result1 = $adminStatement->fetch();
 ?>
 <!doctype html>
 <html lang="en">
@@ -38,13 +37,9 @@ $result1 = mysqli_fetch_assoc($sql1);
 <body data-topbar="dark">
 <div id="layout-wrapper">
 
-<!-- Topbar -->
-
 <?php include('topbar.php');?>
-<!-- Sidebar -->
 <?php include('sidebar.php'); ?>
 
-<!-- Main Content -->
 <div class="main-content">
   <div class="page-content">
     <div class="container-fluid">
@@ -60,17 +55,17 @@ $result1 = mysqli_fetch_assoc($sql1);
             <tbody>
               <?php
               $c = 1;
-              if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                  echo "<tr>
-                    <td>{$c}</td>
-                    <td>{$row['name']}</td>
-                    <td>{$row['email']}</td>
-                    <td>{$row['phone']}</td>
-                    <td>{$row['message']}</td>
-                    <td>{$row['default_date']}</td>
-                    <td><a href='delete.php?ID={$row['ID']}' onclick='return confirm(\"Are you sure?\")' class='btn btn-danger'>Delete</a></td>
-                  </tr>";
+              if (!empty($consultations)) {
+                foreach ($consultations as $row) {
+                  echo '<tr>
+                    <td>' . $c . '</td>
+                    <td>' . escape_html($row['name']) . '</td>
+                    <td>' . escape_html($row['email']) . '</td>
+                    <td>' . escape_html($row['phone']) . '</td>
+                    <td>' . escape_html($row['message']) . '</td>
+                    <td>' . escape_html($row['default_date']) . '</td>
+                    <td><a href="delete.php?ID=' . (int) $row['ID'] . '" onclick="return confirm(\'Are you sure?\')" class="btn btn-danger">Delete</a></td>
+                  </tr>';
                   $c++;
                 }
               }
@@ -86,7 +81,7 @@ $result1 = mysqli_fetch_assoc($sql1);
   <footer class="footer">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-6">© Deco House</div>
+        <div class="col-sm-6">Â© Deco House</div>
         <div class="col-sm-6 text-sm-end">
           Designed and Developed by <a href="https://www.pbainst.in/" class="text-danger">PBA INSTITUTE</a>
         </div>
@@ -97,7 +92,6 @@ $result1 = mysqli_fetch_assoc($sql1);
 
 </div>
 
-<!-- Scripts -->
 <script src="assets/libs/jquery/jquery.min.js"></script>
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>

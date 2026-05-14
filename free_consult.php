@@ -2,31 +2,42 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-include 'dbconnection.php'; // Ensure this defines $conn properly
+require_once __DIR__ . '/dbconnection.php';
 
-if (isset($_POST["submit"])) {
-    if (
-        !empty($_POST['name']) &&
-        !empty($_POST['email']) &&
-        !empty($_POST['phone']) &&
-        !empty($_POST['message'])
-    ) {
-        $user_name = $_POST['name'];
-        $user_email = $_POST['email'];
-        $user_phone = $_POST['phone'];
-        $user_msg = $_POST['message'];
+if (isset($_POST['submit'])) {
+    $userName = trim((string) ($_POST['name'] ?? ''));
+    $userEmail = trim((string) ($_POST['email'] ?? ''));
+    $userPhone = trim((string) ($_POST['phone'] ?? ''));
+    $userMessage = trim((string) ($_POST['message'] ?? ''));
 
-        $sql = "INSERT INTO free_consultation (name, email, phone, message, default_date)
-                VALUES (?, ?, ?, ?, NOW())";
-        $stmt = $con->prepare($sql);
+    if ($userName !== '' && $userEmail !== '' && $userPhone !== '' && $userMessage !== '') {
+        if (!filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
+            echo '
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+            window.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Invalid Email",
+                    text: "Please enter a valid email address.",
+                    confirmButtonColor: "#f0ad4e"
+                });
+            });
+            </script>';
+        } else {
+            try {
+                $statement = $conn->prepare(
+                    'INSERT INTO free_consultation (name, email, phone, message, default_date)
+                     VALUES (:name, :email, :phone, :message, NOW())'
+                );
+                $statement->execute([
+                    ':name' => $userName,
+                    ':email' => $userEmail,
+                    ':phone' => $userPhone,
+                    ':message' => $userMessage,
+                ]);
 
-        if ($stmt) {
-            $stmt->bind_param("ssss", $user_name, $user_email, $user_phone, $user_msg);
-
-            if ($stmt->execute()) {
                 echo '
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script>
@@ -41,7 +52,7 @@ if (isset($_POST["submit"])) {
                     });
                 });
                 </script>';
-            } else {
+            } catch (PDOException $exception) {
                 echo '
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script>
@@ -49,30 +60,13 @@ if (isset($_POST["submit"])) {
                     Swal.fire({
                         icon: "error",
                         title: "Oops!",
-                        text: "Failed to execute statement.",
+                        text: "Unable to save your message right now.",
                         confirmButtonColor: "#d33"
                     });
                 });
                 </script>';
             }
-
-            $stmt->close();
-        } else {
-            echo '
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script>
-            window.addEventListener("DOMContentLoaded", function() {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops!",
-                    text: "Failed to prepare statement.",
-                    confirmButtonColor: "#d33"
-                });
-            });
-            </script>';
         }
-
-        $con->close();
     } else {
         echo '
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

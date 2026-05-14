@@ -1,27 +1,26 @@
-  <?php
-  include('../dbconnection.php');
-  // If upload button is clicked ...
-  if (isset($_POST['upload'])) 
-  {
-    $name=$_POST['name'];
-    $image = $_FILES['image']['name'];
-    $target = "images/".basename($image);
+<?php
+require_once __DIR__ . '/../dbconnection.php';
 
-    $sql = "INSERT INTO image (name,image) VALUES ('$name','$image')";
-    // execute query
-    //mysqli_query($con, $sql); 
-    if (mysqli_query($con, $sql))
-    {
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) 
-    {
-        echo'<script>alert("Added Successfully")</script>';
-        echo'<script>window.location.href = "add_image.php"</script>';
+if (isset($_POST['upload'])) {
+    $name = trim((string) ($_POST['name'] ?? ''));
+
+    if ($name === '' || empty($_FILES['image'])) {
+        echo '<script>alert("Please select a category and image")</script>';
+        exit();
     }
 
+    try {
+        $image = store_uploaded_image($_FILES['image'], __DIR__ . '/images');
+        $statement = $conn->prepare('INSERT INTO image (name, image) VALUES (:name, :image)');
+        $statement->execute([
+            ':name' => $name,
+            ':image' => $image,
+        ]);
+
+        echo '<script>alert("Added Successfully")</script>';
+        echo '<script>window.location.href = "add_image.php"</script>';
+    } catch (Throwable $exception) {
+        echo '<script>alert("Problem in adding new record")</script>';
     }
-    else
-    {
-        echo '<script>alert("Problem in adding new record")</script>';  
-    }
-  }
+}
 ?>

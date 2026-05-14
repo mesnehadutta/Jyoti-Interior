@@ -1,13 +1,12 @@
-
-
 <?php
-include("../dbconnection.php");
-$sql = "DELETE FROM free_consultation WHERE ID='" . $_GET["ID"] . "'";
-if (mysqli_query($con, $sql)) {
-    echo  '<script>alert("Record deleted successfully")<scipt>';
-      header("Location:get_consultation_data.php");
-} else {
-    echo '<script>alert("Error deleting record: " . mysqli_error($conn))</scipt>';
+require_once __DIR__ . '/../dbconnection.php';
+
+$id = filter_input(INPUT_GET, 'ID', FILTER_VALIDATE_INT);
+
+if ($id) {
+    $statement = $conn->prepare('DELETE FROM free_consultation WHERE ID = :id');
+    $statement->execute([':id' => $id]);
 }
-mysqli_close($con);
+
+redirect('get_consultation_data.php');
 ?>

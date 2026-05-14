@@ -1,24 +1,22 @@
 <?php
 
 session_start();
-$email = $_SESSION[ 'sess_email' ];
-if ( isset( $_GET[ 'logout' ] ) )
- {
+require_once __DIR__ . '/../dbconnection.php';
 
-    unset( $_SESSION[ 'sess_email' ] );
+$email = $_SESSION['sess_email'] ?? '';
+if (isset($_GET['logout'])) {
+    unset($_SESSION['sess_email']);
     session_destroy();
-    header( 'Location:../index.php' );
+    redirect('../index.php');
 }
 
-if ( empty( $_SESSION[ 'sess_email' ] ) )
- {
-    header( 'Location:../index.php' );
-
+if (empty($_SESSION['sess_email'])) {
+    redirect('../index.php');
 }
 
-include( '../dbconnection.php' );
-$sql1 = mysqli_query( $con, "SELECT * FROM admin where ID='1'" );
-$result1 = mysqli_fetch_assoc( $sql1 );
+$adminStatement = $conn->prepare('SELECT * FROM admin WHERE ID = :id');
+$adminStatement->execute([':id' => 1]);
+$result1 = $adminStatement->fetch();
 
 ?>
 <!doctype html>
@@ -56,13 +54,8 @@ $result1 = mysqli_fetch_assoc( $sql1 );
 
 <?php include('topbar.php') ?>
 
-<!-- ========== Left Sidebar Start ========== -->
 <?php include('sidebar.php') ?>
-<!-- Left Sidebar End -->
 
-<!-- ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  == -->
-<!-- Start right Content here -->
-<!-- ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  ===  == -->
 <div class = 'main-content'>
 
 <div class = 'page-content'>
@@ -102,35 +95,29 @@ $result1 = mysqli_fetch_assoc( $sql1 );
 </div>
 
 </div>
-<!-- end row -->
 <div class = 'row mb-3'>
 <label for = 'example-search-input' class = 'col-sm-2 col-form-label'>Image</label>
 <div class = 'col-sm-10'>
 <div class = 'input-group'>
-<input type = 'file' class = 'form-control' name = 'image' id = 'image' required>
+<input type = 'file' class = 'form-control' name = 'image' id = 'image' accept="image/*" required>
 </div>
 </div>
 </div>
-<!-- end row -->
 <input type = 'submit' value = 'Upload' class = 'btn btn-info waves-effect waves-light' name = 'upload'>
-
-<!-- end row -->
 </form>
 </div>
 </div>
 
-</div> <!-- end col -->
+</div>
 
 </div>
-<!-- end row -->
 </div>
-<!-- End Page-content -->
 
 <footer class = 'footer'>
 <div class = 'container-fluid'>
 <div class = 'row'>
 <div class = 'col-sm-6'>
-© Deco House
+Â© Deco House
 </div>
 <div class = 'col-sm-6'>
 <div class = 'text-sm-end d-none d-sm-block'>
@@ -142,12 +129,9 @@ Designed and Developed  <i class = 'mdi mdi-heart text-danger'></i>  by <a href 
 </footer>
 
 </div>
-<!-- end main content-->
 
 </div>
-<!-- END layout-wrapper -->
 
-<!-- Right Sidebar -->
 <div class = 'right-bar'>
 <div data-simplebar class = 'h-100'>
 <div class = 'rightbar-title d-flex align-items-center px-3 py-4'>
@@ -159,7 +143,6 @@ Designed and Developed  <i class = 'mdi mdi-heart text-danger'></i>  by <a href 
 </a>
 </div>
 
-<!-- Settings -->
 <hr class = 'mt-0' />
 <h6 class = 'text-center mb-0'>Choose Layouts</h6>
 
@@ -191,21 +174,16 @@ Designed and Developed  <i class = 'mdi mdi-heart text-danger'></i>  by <a href 
 
 </div>
 
-</div> <!-- end slimscroll-menu-->
 </div>
-<!-- /Right-bar -->
-
-<!-- Right bar overlay-->
+</div>
 <div class = 'rightbar-overlay'></div>
 
-<!-- JAVASCRIPT -->
 <script src = 'assets/libs/jquery/jquery.min.js'></script>
 <script src = 'assets/libs/bootstrap/js/bootstrap.bundle.min.js'></script>
 <script src = 'assets/libs/metismenu/metisMenu.min.js'></script>
 <script src = 'assets/libs/simplebar/simplebar.min.js'></script>
 <script src = 'assets/libs/node-waves/waves.min.js'></script>
 
-<!-- bs custom file input plugin -->
 <script src = 'assets/libs/bs-custom-file-input/bs-custom-file-input.min.js'></script>
 
 <script src = 'assets/js/pages/form-element.init.js'></script>

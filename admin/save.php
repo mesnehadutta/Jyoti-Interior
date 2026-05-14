@@ -1,60 +1,73 @@
 <?php
-include('../dbconnection.php');
+require_once __DIR__ . '/../dbconnection.php';
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') 
-{
-	$id = $_GET['cid'];
-	// Delete existing data for the project
-	$delete_query = "DELETE FROM project_description WHERE project_id='$id'";
-	$delete_result = mysqli_query($con, $delete_query);
-	if ($delete_result) {
-		foreach ($_POST['date'] as $key=>$value) {
-			
-			$date = $_POST['date'][$key];
-			$work_dones = $_POST['work_done'][$key];
-			$work_details = $_POST['work_detail'][$key];
-			$pending_amounts = $_POST['pending_amount'][$key];
+header('Content-Type: application/json');
 
-			$work_done = mysqli_real_escape_string($con, $work_dones);
-			$work_detail = mysqli_real_escape_string($con, $work_details);
-			$pending_amount = mysqli_real_escape_string($con, $pending_amounts);
-
-			// if(!empty($_POST['image_name'][$key]))
-			// {
-			// 	$IMAGE=$_POST['image_name'][$key];
-			// }
-
-			// else
-			// {
-				$sourcePath = $_FILES['images']['tmp_name'][$key];
-				$image=$_FILES['images']['name'][$key];
-				$targetPath = "images/" .basename($image);
-				move_uploaded_file($sourcePath, $targetPath);
-				$IMAGE=$_FILES['images']['name'][$key];
-				if(empty($IMAGE))
-				{
-					$IMAGE=$_POST['image_name'][$key];
-				}
-			// }
-				
-
-			$query1="INSERT INTO project_description(project_id,date1,work_done,work_details,pending_amount,image,image_name)VALUES ('$id','$date','$work_done','$work_detail','$pending_amount','$IMAGE','$IMAGE')";
-			$inser_query=mysqli_query($con, $query1);
-		}	
-
-
-		$response = array('status' => 'success', 'message' => 'Data added successfully');
-		echo json_encode($response);
-	} 
-	else {
-		$response = array('status' => 'error', 'message' => 'Failed to delete existing data');
-		echo json_encode($response);
-	}
-} 
-else {
-	$response = array('status' => 'error', 'message' => 'Required fields are not set');
-	echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['status' => 'error', 'message' => 'Required fields are not set']);
+    exit();
 }
 
-mysqli_close($con);
+$id = filter_input(INPUT_GET, 'cid', FILTER_VALIDATE_INT);
+if (!$id) {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid project ID']);
+    exit();
+}
+
+$dates = $_POST['date'] ?? [];
+$workDoneList = $_POST['work_done'] ?? [];
+$workDetailList = $_POST['work_detail'] ?? [];
+$pendingAmountList = $_POST['pending_amount'] ?? [];
+$existingImages = $_POST['image_name'] ?? [];
+
+try {
+    $conn->beginTransaction();
+
+    $deleteStatement = $conn->prepare('DELETE FROM project_description WHERE project_id = :project_id');
+    $deleteStatement->execute([':project_id' => $id]);
+
+    $insertStatement = $conn->prepare(
+        'INSERT INTO project_description
+        (project_id, date1, work_done, work_details, pending_amount, image, image_name)
+        VALUES (:project_id, :date1, :work_done, :work_details, :pending_amount, :image, :image_name)'
+    );
+
+    foreach ($dates as $key => $value) {
+        $date = trim((string) $value);
+        $workDone = trim((string) ($workDoneList[$key] ?? ''));
+        $workDetail = trim((string) ($workDetailList[$key] ?? ''));
+        $pendingAmount = trim((string) ($pendingAmountList[$key] ?? ''));
+        $imageName = trim((string) ($existingImages[$key] ?? ''));
+
+        if (isset($_FILES['images']['error'][$key]) && $_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+            $singleFile = [
+                'name' => $_FILES['images']['name'][$key],
+                'type' => $_FILES['images']['type'][$key],
+                'tmp_name' => $_FILES['images']['tmp_name'][$key],
+                'error' => $_FILES['images']['error'][$key],
+                'size' => $_FILES['images']['size'][$key],
+            ];
+            $imageName = store_uploaded_image($singleFile, __DIR__ . '/images');
+        }
+
+        $insertStatement->execute([
+            ':project_id' => $id,
+            ':date1' => $date,
+            ':work_done' => $workDone,
+            ':work_details' => $workDetail,
+            ':pending_amount' => $pendingAmount,
+            ':image' => $imageName,
+            ':image_name' => $imageName,
+        ]);
+    }
+
+    $conn->commit();
+    echo json_encode(['status' => 'success', 'message' => 'Data added successfully']);
+} catch (Throwable $exception) {
+    if ($conn->inTransaction()) {
+        $conn->rollBack();
+    }
+
+    echo json_encode(['status' => 'error', 'message' => 'Failed to save project data']);
+}
 ?>

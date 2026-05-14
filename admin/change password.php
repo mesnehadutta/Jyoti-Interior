@@ -1,56 +1,52 @@
 <?php
+session_start();
+require_once __DIR__ . '/../dbconnection.php';
 
-
- session_start();
- $email=$_SESSION['sess_email'];
-if (isset($_GET['logout']))
-  {
- 
-      
-  unset($_SESSION['sess_email']);
-  session_destroy();
-  header("Location:../index.php");
+$email = $_SESSION['sess_email'] ?? '';
+if (isset($_GET['logout'])) {
+    unset($_SESSION['sess_email']);
+    session_destroy();
+    redirect('../index.php');
 }
 
-if(empty($_SESSION['sess_email']))
-{
- header("Location:../index.php");
-
+if (empty($_SESSION['sess_email'])) {
+    redirect('../index.php');
 }
 
-include('../dbconnection.php');
+$adminStatement = $conn->prepare('SELECT * FROM admin WHERE ID = :id');
+$adminStatement->execute([':id' => 1]);
+$result1 = $adminStatement->fetch();
 
+if (isset($_POST['submit'])) {
+    $oldpass = (string) ($_POST['oldpwd'] ?? '');
+    $newpassword = (string) ($_POST['newpwd'] ?? '');
+    $confirmpasswod = (string) ($_POST['conpwd'] ?? '');
+    $storedPassword = (string) ($result1['password'] ?? '');
+    $trimmedStoredPassword = trim($storedPassword);
 
-//$conn=  mysqli_connect("localhost","root","","decohouse","3306");
-$sql=mysqli_query($con,"SELECT * FROM admin where ID='1'");
-$result1 =mysqli_fetch_assoc($sql);
+    if ($newpassword !== $confirmpasswod) {
+        echo '<script>alert("New password and confirm password do not match")</script>';
+    } elseif (
+        !hash_equals($storedPassword, $oldpass) &&
+        !hash_equals($trimmedStoredPassword, $oldpass) &&
+        !password_verify($oldpass, $storedPassword) &&
+        !password_verify($oldpass, $trimmedStoredPassword)
+    ) {
+        echo '<script>alert("Old password is incorrect")</script>';
+    } else {
+        $passwordToStore = password_hash($newpassword, PASSWORD_DEFAULT);
+        $updateStatement = $conn->prepare('UPDATE admin SET password = :password WHERE ID = :id');
+        $updateStatement->execute([
+            ':password' => $passwordToStore,
+            ':id' => 1,
+        ]);
 
-
-if(isset($_POST['submit']))
-{
- $oldpass=($_POST['oldpwd']);
- $newpassword=($_POST['newpwd']);
- $confirmpasswod=($_POST['conpwd']);
-
- if($newpassword==$confirmpasswod)
-{   
-$sql=mysqli_query($con,"SELECT password FROM admin where password='$oldpass'");
-$num=mysqli_fetch_array($sql);
-if($num>0)
-{
- $con=mysqli_query($con,"update admin set password=' $newpassword'");
-echo '<script>alert("Password Changed Successfully !!")</script>';
- echo'<script>window.location.href = "change password.php"</script>';
-}
-}
-else{
-    echo'<script>alert("newpassword not match confirmpasswod!!")</script>';
-    echo'<script>window.location.href = "change password.php"</script>';
-}
+        echo '<script>alert("Password Changed Successfully")</script>';
+        echo '<script>window.location.href = "change password.php"</script>';
+        exit();
+    }
 }
 ?>
-
-
 
 <!doctype html>
 <html lang="en">
@@ -62,22 +58,15 @@ else{
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
 <meta content="Themesdesign" name="author" />
-<!-- App favicon -->
 <link rel="shortcut icon" href="../assets/img/icon10.png">
 
-<!-- DataTables -->
 <link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="assets/libs/datatables.net-select-bs4/css//select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
-<!-- Responsive datatable examples -->
-<link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />     
-
-<!-- Bootstrap Css -->
 <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-<!-- Icons Css -->
 <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-<!-- App Css-->
 <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
 </head>
@@ -88,17 +77,8 @@ else{
 
 <?php include('topbar.php') ?>
 
-<!-- ========== Left Sidebar Start ========== -->
 <?php include('sidebar.php') ?>
-<!-- Left Sidebar End -->
 
-
-
-
-
-<!-- ============================================================== -->
-<!-- Start right Content here -->
-<!-- ============================================================== -->
 <div class="main-content">
 
 <div class="page-content">
@@ -118,26 +98,26 @@ else{
 <div class="mb-3">
 <label>Old Password</label>
 <div>
-<input type="text" class="form-control" required="" name="oldpwd" placeholder="Old Password" readonly value="<?php echo $result1['password'];?>">
+<input type="password" class="form-control" required="" name="oldpwd" placeholder="Old Password" value="">
 </div>
 </div>
 <div class="mb-3">
 <label>New Password</label>
 <div>
-<input type="text" class="form-control" required="" name="newpwd" placeholder="New Password" value="">
+<input type="password" class="form-control" required="" name="newpwd" placeholder="New Password" value="">
 </div>
 </div>
 <div class="mb-3">
 <label>Confirm Password</label>
 <div>
-<input type="Password" class="form-control" required="" name="conpwd" placeholder="Confirm Password" value="">
+<input type="password" class="form-control" required="" name="conpwd" placeholder="Confirm Password" value="">
 </div>
 </div>
 
 
 <div class="mb-0">
 <div>
-<input type="submit" class="btn btn-info" name="submit" value="Change Password"></button>
+<input type="submit" class="btn btn-info" name="submit" value="Change Password">
 <button type="reset" class="btn btn-secondary waves-effect">
 Cancel
 </button>
@@ -147,24 +127,22 @@ Cancel
 
 </div>
 </div>
-</div> <!-- end col -->
+</div>
 </div>
 
 
-</div> <!-- container-fluid -->
 </div>
-<!-- End Page-content -->
+</div>
 
 
 </div>
-<!-- end main content-->
 
 
   <footer class="footer">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                               © Deco House
+                               Â© Deco House
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">
@@ -177,27 +155,19 @@ Cancel
 
 
 </div>
-<!-- END layout-wrapper -->
 
-
-<!-- /Right-bar -->
-
-<!-- Right bar overlay-->
 <div class="rightbar-overlay"></div>
 
-<!-- JAVASCRIPT -->
 <script src="assets/libs/jquery/jquery.min.js"></script>
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="assets/libs/metismenu/metisMenu.min.js"></script>
 <script src="assets/libs/simplebar/simplebar.min.js"></script>
 <script src="assets/libs/node-waves/waves.min.js"></script>
 
-<!-- Plugins js -->
 <script src="assets/libs/moment/min/moment.min.js"></script>
 <script src="assets/libs/bootstrap-editable/js/index.js"></script>
 
-<!-- Init js-->
-<script src="assets/js/pages/form-xeditable.init.js"></script>   
+<script src="assets/js/pages/form-xeditable.init.js"></script>
 
 <script src="assets/js/app.js"></script>
 

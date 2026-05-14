@@ -1,48 +1,53 @@
 <?php
+session_start();
+require_once __DIR__ . '/../dbconnection.php';
 
- session_start();
- $email=$_SESSION['sess_email'];
- $id=$_GET["id"];
-if (isset($_GET['logout']))
-  {
- 
-      
-  unset($_SESSION['sess_email']);
-  session_destroy();
-  header("Location:../index.php");
+if (isset($_GET['logout'])) {
+    unset($_SESSION['sess_email']);
+    session_destroy();
+    redirect('../index.php');
 }
 
-if(empty($_SESSION['sess_email']))
-{
- header("Location:../index.php");
-
+if (empty($_SESSION['sess_email'])) {
+    redirect('../index.php');
 }
 
-include('../dbconnection.php');
-$sql=mysqli_query($con,"SELECT * FROM admin where ID='1'");
-$result =mysqli_fetch_assoc($sql);
+$email = $_SESSION['sess_email'];
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-$sql1=mysqli_query($con,"SELECT * FROM image where id='" . $_GET["id"] . "'");
-$result1 =mysqli_fetch_assoc($sql1);
+if (!$id) {
+    redirect('display_image.php');
+}
 
-if (isset($_POST['update']))  
-{
-    $name=$_POST['name'];
-    $description=$_POST['description'];
-//$conn=  mysqli_connect("localhost","root","","decohouse","3306");
-    $sql3  = "UPDATE image SET name = '$name',description='$description' WHERE id='" .$_GET["id"]."'";
+$adminStatement = $conn->prepare('SELECT * FROM admin WHERE ID = :id');
+$adminStatement->execute([':id' => 1]);
+$result = $adminStatement->fetch();
 
-    if($con->query($sql3) === TRUE) 
-    {
-       echo '<script>alert("Update Successfully")</script>';
+$imageStatement = $conn->prepare('SELECT * FROM image WHERE id = :id');
+$imageStatement->execute([':id' => $id]);
+$result1 = $imageStatement->fetch();
 
-        //echo'<script>window.location.href = "editprofile.php"</script>';
-    }
-  else 
-  {
-        echo '<script>alert"Erorr while updating record : ". $con->error</script>';
-    }
-    $con->close();
+if (!$result1) {
+    redirect('display_image.php');
+}
+
+if (isset($_POST['update'])) {
+    $name = trim((string) ($_POST['name'] ?? ''));
+    $description = trim((string) ($_POST['description'] ?? ''));
+
+    $updateStatement = $conn->prepare(
+        'UPDATE image SET name = :name, description = :description WHERE id = :id'
+    );
+    $updateStatement->execute([
+        ':name' => $name,
+        ':description' => $description,
+        ':id' => $id,
+    ]);
+
+    echo '<script>alert("Update Successfully")</script>';
+
+    $imageStatement->execute([':id' => $id]);
+    $result1 = $imageStatement->fetch();
 }
 ?>
 
@@ -101,26 +106,12 @@ if (isset($_POST['update']))
 </style>
 <body data-topbar="dark">
 
-<!-- <body data-layout="horizontal" data-topbar="dark"> -->
-
-<!-- Begin page -->
 <div id="layout-wrapper">
-
-
 
 <?php include('topbar.php') ?>
 
-<!-- ========== Left Sidebar Start ========== -->
 <?php include('sidebar.php') ?>
-<!-- Left Sidebar End -->
 
-
-
-
-
-<!-- ============================================================== -->
-<!-- Start right Content here -->
-<!-- ============================================================== -->
 <div class="main-content">
 
 <div class="page-content">
@@ -134,25 +125,21 @@ if (isset($_POST['update']))
 
 <h4 class="card-title">Edit Image Details</h4>
 
-
-
-
-
   <div class="form-group">
-<img src="images/<?php  echo $result1['image'];?>" class="rounded avatar-lg">
+<img src="images/<?php echo escape_html($result1['image']);?>" class="rounded avatar-lg" alt="Selected image">
 <br><br>
 <div class="mb-0">
 <div>
-<form action="change_image.php?id=<?php echo $id;?> " method="post" enctype="multipart/form-data">
+<form action="change_image.php?id=<?php echo (int) $id; ?>" method="post" enctype="multipart/form-data">
                                                         <div class="upload-img" >
 
                                                             <div class="change-photo-btn">
                                                                 <span><i class="fa fa-upload"></i> Upload </span>
-                                                                <input type="file" class="upload" name="image">
+                                                                <input type="file" class="upload" name="image" accept="image/*">
                                                             </div>
                                                             <input type="submit" name="upload" style="position: relative;  border-radius: 5px; color: white; background-color:#6c757d; width:150px ;padding: 10px 2px;text-align: center;font-size: 13px; height:35px;
                                                             font-weight: 550;cursor: pointer; box-sizing: border-box; border-color: transparent; margin-top: 5px;" value="Submit">
-                                                            
+
                                                         </div>
                                                     </form>
 
@@ -161,11 +148,11 @@ if (isset($_POST['update']))
 <form action="" method="POST" class="custom-validation">
 <label> Change Name</label>
 <div>
-<input type="text" class="form-control" required="" name="name" placeholder="Name" value="<?php echo $result1['name'] ?>">
+<input type="text" class="form-control" required="" name="name" placeholder="Name" value="<?php echo escape_html($result1['name']) ?>">
 </div>
 <label> Image Description</label>
 <div>
-<input type="text" class="form-control" required="" name="description" placeholder="Image Description" value="<?php echo $result1['description'] ?>">
+<input type="text" class="form-control" required="" name="description" placeholder="Image Description" value="<?php echo escape_html($result1['description']) ?>">
 </div>
 </div>
 
@@ -198,7 +185,7 @@ if (isset($_POST['update']))
 <div class="container-fluid">
 <div class="row">
 <div class="col-sm-6">
-© Deco House
+Â© Deco House
 </div>
 <div class="col-sm-6">
 <div class="text-sm-end d-none d-sm-block">
@@ -274,7 +261,7 @@ Designed and Developed  <i class="mdi mdi-heart text-danger"></i>  by <a href="h
 <script src="assets/libs/bootstrap-editable/js/index.js"></script>
 
 <!-- Init js-->
-<script src="assets/js/pages/form-xeditable.init.js"></script>   
+<script src="assets/js/pages/form-xeditable.init.js"></script>
 
 <script src="assets/js/app.js"></script>
 
